@@ -131,3 +131,9 @@ dist
 
 # settings
 config.js
+
+# testing
+coverage/
+
+# production
+build/

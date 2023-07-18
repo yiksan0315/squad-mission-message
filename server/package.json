@@ -4,8 +4,7 @@
   "description": "sqaud part mission(8,9)",
   "main": "index.js",
   "scripts": {
-    "client": "cd client && npm start",
-    "start": "nodemon --exec babel-node server --delay 2"
+    "start": "nodemon --exec babel-node . --delay 2"
   },
   "repository": {
     "type": "git",
@@ -30,7 +29,8 @@
     "jsonwebtoken": "^9.0.1",
     "mongodb": "4.1",
     "mongoose": "^7.3.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",

@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import apiRouter from '../routes/api';
 import morgan from 'morgan';
 import config from '../config';
+import path from 'path';
 
 export default async ({ app }) => {
   app.use(express.json());
@@ -15,10 +16,6 @@ export default async ({ app }) => {
 
   app.use(cookieParser());
 
-  app.get('/', (req, res) => {
-    // 여기에다가 로그인 화면
-    res.send('login!');
-  });
+  app.use(express.static(path.join(__dirname, '../../client/build')));
   app.use('/api', apiRouter);
-  // app.use(express.static(path.join(__dirname, '../../client/build')));
 };
