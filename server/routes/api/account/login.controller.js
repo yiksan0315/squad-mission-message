@@ -38,7 +38,6 @@ export const login = async (req, res) => {
             res.status(HttpStatusCode.Ok).send({
               success: true,
               message: 'login successfully',
-              token,
             });
           }
         );

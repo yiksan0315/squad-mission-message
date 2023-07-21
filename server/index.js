@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import expressLoader from './loaders/express';
 import mongooseLoader from './loaders/mongoose';
+import Account from './models/Account';
 
 const startServer = async () => {
   const app = express();
@@ -21,6 +22,15 @@ const startServer = async () => {
     console.error(err);
     return;
   }
+
+  const testMake = () => {
+    for (let i = 0; i < 100; i++) {
+      const a = i.toString();
+      Account.create({ id: a, password: a, nickname: a });
+    }
+  };
+
+  // testMake();
 };
 
 startServer();

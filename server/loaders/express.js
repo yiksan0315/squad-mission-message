@@ -17,5 +17,10 @@ export default async ({ app }) => {
   app.use(cookieParser());
 
   app.use(express.static(path.join(__dirname, '../../client/build')));
+
   app.use('/api', apiRouter);
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  });
 };
