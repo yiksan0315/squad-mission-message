@@ -17,9 +17,17 @@ export const StyledBackground = styled.div`
   width: 50%;
   height: 75%;
 
+  @media (max-width: 400px) {
+    width: 200px;
+  }
+
+  @media (max-height: 600px) {
+    height: 450px;
+  }
+
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   flex-direction: column;
 
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
