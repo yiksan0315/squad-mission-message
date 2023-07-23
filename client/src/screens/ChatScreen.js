@@ -1,47 +1,42 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { StyledBackground, StyledWindow } from '../styles/BackGroundStyle';
 import Header from '../components/Chat/Header';
 import ChatBox from '../components/Chat/ChatBox';
-import { styled } from 'styled-components';
-import OpenColor from 'open-color';
 import HeaderButton from '../components/Chat/HeaderButton';
+import { useSelector } from 'react-redux';
+import MessageSendingBox from '../components/Chat/MessageSendingBox';
 
-const MessageSendingBox = styled.div`
-  display: flex;
-  background-color: ${OpenColor.indigo[5]};
-  border-radius: 0 0 1em 1em;
-
-  width: 100%;
-  height: 10%;
-  justify-content: space-evenly;
-  align-items: center;
-`;
-
-const ChatScreen = ({ token, onLogout }) => {
+const ChatScreen = ({ token }) => {
   const params = useParams();
-  const id = params.id;
-
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {});
-
   const navigate = useNavigate();
-  const onClick = () => {
+  const chatBoxRef = useRef();
+
+  const { chattings } = useSelector((state) => {
+    return state.Chatting;
+  });
+
+  useEffect(() => {
+    chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [chattings]);
+
+  const onClick = useCallback(() => {
     navigate('/');
-  };
+  }, [navigate]);
 
   return (
     <StyledWindow>
       <StyledBackground>
-        <Header nickname={token.nickname} onLogout={onLogout}>
+        <Header nickname={token.nickname}>
           <HeaderButton value="back" onClick={onClick} />
         </Header>
-        <ChatBox errorMessage="no chating..."></ChatBox>
-        <MessageSendingBox>
-          <input placeholder="type message..." />
-          <input type="button" value=">>" />
-        </MessageSendingBox>
+        <ChatBox errorMessage="no chating...">
+          {chattings.map((item) => {
+            return <div>{item}</div>;
+          })}
+          <div ref={chatBoxRef} />
+        </ChatBox>
+        <MessageSendingBox id={params.id}></MessageSendingBox>
       </StyledBackground>
     </StyledWindow>
   );

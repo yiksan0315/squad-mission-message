@@ -2,9 +2,9 @@ import { check } from '../api/Login';
 import { getCookie, removeCookie } from '../utils/Cookie';
 
 // Action types
-const SET_TOKEN = 'AcessToken/SET_TOKEN';
-const SET_TOKEN_SUCCESS = 'AcessToken/SET_TOKEN_SUCCESS';
-const SET_TOKEN_ERROR = 'AcessToken/SET_TOKEN_ERROR';
+const SET_TOKEN = 'AccessToken/SET_TOKEN';
+const SET_TOKEN_SUCCESS = 'AccessToken/SET_TOKEN_SUCCESS';
+const SET_TOKEN_ERROR = 'AccessToken/SET_TOKEN_ERROR';
 
 // Action Creating functions
 export const setToken = () => async (dispatch) => {

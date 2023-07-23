@@ -22,4 +22,4 @@ const ChatBox = ({ children, errorMessage }) => {
   return <ChatWrapper>{children}</ChatWrapper>;
 };
 
-export default ChatBox;
+export default React.memo(ChatBox);

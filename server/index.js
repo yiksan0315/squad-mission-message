@@ -1,18 +1,21 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import expressLoader from './loaders/express';
 import mongooseLoader from './loaders/mongoose';
 import Account from './models/Account';
+import http from 'http';
+import socketIoLoader from './loaders/socket.io';
 
 const startServer = async () => {
   const app = express();
+  const server = http.createServer(app);
   const port = process.env.PORT || 5000;
 
   try {
     await expressLoader({ app });
-    await mongooseLoader({ mongoose });
+    await mongooseLoader();
+    await socketIoLoader({ app, server });
 
-    app.listen(port, (err) => {
+    server.listen(port, (err) => {
       if (err) {
         throw new Error(err);
       }
@@ -22,15 +25,6 @@ const startServer = async () => {
     console.error(err);
     return;
   }
-
-  const testMake = () => {
-    for (let i = 0; i < 100; i++) {
-      const a = i.toString();
-      Account.create({ id: a, password: a, nickname: a });
-    }
-  };
-
-  // testMake();
 };
 
 startServer();

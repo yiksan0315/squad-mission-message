@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyledBackground, StyledWindow } from '../styles/BackGroundStyle';
 import { styled } from 'styled-components';
 import OpenColor from 'open-color';
@@ -8,9 +8,10 @@ import Header from '../components/Chat/Header';
 import ChatBox from '../components/Chat/ChatBox';
 import HeaderButton from '../components/Chat/HeaderButton';
 import { logout } from '../api/Login';
+import socket from '../lib/socket';
 
 const Message = styled.p`
-  font-size: 1.5em;
+  font-size: 2.5em;
   color: ${OpenColor.red[3]};
 `;
 
@@ -34,9 +35,10 @@ const HomeScreen = ({ token, onLogout }) => {
     getAccounts();
   }, []);
 
-  const onClick = async () => {
+  const onClick = useCallback(async () => {
+    socket.emit('unregister', token.id);
     await logout(onLogout);
-  };
+  }, [onLogout, token]);
 
   return (
     <StyledWindow>
@@ -45,17 +47,13 @@ const HomeScreen = ({ token, onLogout }) => {
           <HeaderButton value="Log Out" onClick={onClick} />
         </Header>
         <ChatBox>
-          {!users || isLoading ? (
+          {isLoading ? (
             <Message>{message}</Message>
           ) : (
-            users.map((item) => {
+            users.map((item, index) => {
               if (item.id !== token.id) {
                 return (
-                  <UserBox
-                    id={item.id}
-                    nickname={item.nickname}
-                    key={item.id}
-                  />
+                  <UserBox key={index} id={item.id} nickname={item.nickname} />
                 );
               } else {
                 return <></>;
@@ -68,4 +66,4 @@ const HomeScreen = ({ token, onLogout }) => {
   );
 };
 
-export default React.memo(HomeScreen);
+export default HomeScreen;

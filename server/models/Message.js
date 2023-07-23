@@ -1,4 +1,21 @@
-// 유저가 채팅 시작하면 존재하던 모든 유저에 대해 대화방 생성
-// 유저는 자신의 대화방 id 저장
-// 메세지와 각각 누구 메세지인지 배열로 저장 => 대화방
-// 대화방 모음 => 메세지 박스
+import mongoose from 'mongoose';
+
+const MessageSchema = new mongoose.Schema({
+  chatting_id: { type: mongoose.Types.ObjectId, required: true },
+  from_id: { type: String, required: true, trim: true },
+  content: { type: String, required: true },
+  time: { type: Date },
+});
+
+MessageSchema.statics.create = function ({ chatting_id, from_id, content }) {
+  const message = new this({
+    chatting_id,
+    from_id,
+    content,
+    time: new Date(),
+  });
+
+  return message.save();
+};
+
+export default mongoose.model('Message', MessageSchema);

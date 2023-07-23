@@ -2,8 +2,11 @@ import OpenColor from 'open-color';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { shadow } from '../../utils/StyleUtil';
+import React from 'react';
 
 const Wrapper = styled(Link)`
+  display: flex;
+
   width: 100%;
   text-decoration: none;
   color: inherit;
@@ -24,7 +27,12 @@ const Wrapper = styled(Link)`
 `;
 
 const UserBox = ({ id, nickname }) => {
-  return <Wrapper to={`/chat/${id}`}>{nickname}</Wrapper>;
+  return (
+    <Wrapper to={`/chat/${id}`}>
+      <p>{`(${id})`}</p>
+      <h5>{nickname}</h5>
+    </Wrapper>
+  );
 };
 
-export default UserBox;
+export default React.memo(UserBox);

@@ -4,21 +4,36 @@ import HomeScreen from './screens/HomeScreen';
 import ChatScreen from './screens/ChatScreen';
 import { useSelector, useDispatch } from 'react-redux';
 import { setToken } from './modules/AccessToken';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { addMessage } from './modules/Chatting';
+import socket from './lib/socket';
 
 function App() {
   const { loading, data, error } = useSelector((state) => {
     return state.AccessToken.token;
   });
+
   const dispatch = useDispatch();
 
-  const onSetToken = () => {
+  const onSetToken = useCallback(() => {
     dispatch(setToken());
-  };
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(setToken());
+
+    socket.on('sending', (message) => {
+      dispatch(addMessage(message));
+    });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!loading) {
+      if (!error && data) {
+        socket.emit('register', data.id);
+      }
+    }
+  }, [data, loading, error]);
 
   return (
     <Routes>
@@ -32,10 +47,7 @@ function App() {
           )
         }
       />
-      <Route
-        path="/chat/:id"
-        element={<ChatScreen token={data} onLogout={onSetToken} />}
-      />
+      <Route path="/chat/:id" element={<ChatScreen token={data} />} />
     </Routes>
   );
 }

@@ -1,7 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import OpenColor from 'open-color';
-import Logout from './HeaderButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,4 +28,4 @@ const Header = ({ children, nickname }) => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

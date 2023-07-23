@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import oc from 'open-color';
 import { shadow } from '../../utils/StyleUtil';
-import { logout } from '../../api/Login';
+import React from 'react';
 
 const Wrapper = styled.input`
   margin: 0.5rem;
@@ -36,4 +36,4 @@ const HeaderButton = ({ value, onClick }) => {
   return <Wrapper type="button" value={value} onClick={onClick}></Wrapper>;
 };
 
-export default HeaderButton;
+export default React.memo(HeaderButton);
