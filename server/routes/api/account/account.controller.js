@@ -12,7 +12,11 @@ export const getAccountById = async (req, res) => {
     const { _id, password, nickname } = account;
     res
       .status(HttpStatusCode.Ok)
-      .send({ success: true, account: { _id, id, nickname } });
+      .send({
+        success: true,
+        message: 'Get Account succefully!',
+        result: { _id, id, nickname },
+      });
   } catch (err) {
     res
       .status(HttpStatusCode.BadRequest)
@@ -32,7 +36,11 @@ export const getAccount = async (req, res) => {
     } else {
       throw new Error('no user');
     }
-    res.status(HttpStatusCode.Ok).send({ success: true, accountNoPassword });
+    res.status(HttpStatusCode.Ok).send({
+      success: true,
+      message: 'Get Account Successfully',
+      result: accountNoPassword,
+    });
   } catch (err) {
     res
       .status(HttpStatusCode.BadRequest)

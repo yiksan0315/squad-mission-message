@@ -7,7 +7,7 @@ export const getUsers = async () => {
     if (!data.success) {
       throw new Error(data.message);
     }
-    return data.accountNoPassword;
+    return data.result;
   } catch (err) {
     throw new Error(err.message);
   }
@@ -20,7 +20,7 @@ export const getUserById = async (id) => {
     if (!data.success) {
       throw new Error(data.message);
     }
-    return data.account;
+    return data.result;
   } catch (err) {
     throw new Error(err.message);
   }

@@ -16,4 +16,25 @@ ChattingSchema.statics.create = function ({ from_id, to_id }) {
   return chatting.save();
 };
 
+ChattingSchema.statics.findOneByFromIdAndToId = async function ({
+  from_id,
+  to_id,
+}) {
+  let chatting = await this.findOne({
+    from_id,
+    to_id,
+  }).exec();
+  if (!chatting) {
+    chatting = await this.findOne({
+      to_id: from_id,
+      from_id: to_id,
+    }).exec();
+  }
+  return chatting;
+};
+
+ChattingSchema.statics.findOneById = function (id) {
+  return this.findOne({ _id: new mongoose.Types.ObjectId(id) });
+};
+
 export default mongoose.model('Chatting', ChattingSchema);

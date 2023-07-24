@@ -58,7 +58,7 @@ export const check = async (token) => {
     if (!data.success) {
       throw new Error(data.message);
     }
-    return data.decoded;
+    return data.result;
   } catch (err) {
     throw new Error(err.message);
   }
