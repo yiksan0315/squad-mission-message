@@ -9,8 +9,8 @@ export const postMessage = async (req, res) => {
       throw new Error('request not correct... ');
     }
 
-    Message.create({ chatting_id, from_id, content });
-    res.status(HttpStatusCode.Ok).send({ success: true });
+    const message = await Message.create({ chatting_id, from_id, content });
+    res.status(HttpStatusCode.Ok).send({ success: true, result: message });
   } catch (err) {
     res
       .status(HttpStatusCode.BadRequest)

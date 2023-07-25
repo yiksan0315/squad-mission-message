@@ -9,6 +9,8 @@ import ChatBox from '../components/Chat/ChatBox';
 import HeaderButton from '../components/Chat/HeaderButton';
 import { logout } from '../api/Login';
 import socket, { socketEvent } from '../lib/socket';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAccounts } from '../modules/Account';
 
 const Message = styled.p`
   font-size: 2.5em;
@@ -17,23 +19,28 @@ const Message = styled.p`
 
 const HomeScreen = ({ token, onLogout }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [users, setUsers] = useState([]);
   const [message, setMessage] = useState('');
+
+  const accounts = useSelector((state) => {
+    return state.Account.accounts;
+  });
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     async function getAccounts() {
       try {
         setIsLoading(true);
         setMessage('loading...');
-        const accounts = await getUsers();
-        setUsers(accounts);
+        const accountsObject = await getUsers();
+        dispatch(setAccounts(accountsObject));
       } catch (err) {
         setMessage(err.message);
       }
       setIsLoading(false);
     }
     getAccounts();
-  }, []);
+  }, [dispatch]);
 
   const onClick = useCallback(async () => {
     socket.emit(socketEvent.UNREGISTER, token.id);
@@ -50,11 +57,9 @@ const HomeScreen = ({ token, onLogout }) => {
           {isLoading ? (
             <Message>{message}</Message>
           ) : (
-            users.map((item, index) => {
+            accounts.map((item) => {
               if (item.id !== token.id) {
-                return (
-                  <UserBox key={index} id={item.id} nickname={item.nickname} />
-                );
+                return <UserBox key={item._id} user={item} />;
               } else {
                 return <></>;
               }

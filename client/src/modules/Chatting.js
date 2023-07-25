@@ -5,15 +5,10 @@ const SET_CHATTING = 'Chatting/SET_CHATTING';
 
 // Action Creating functions
 
-export const addMessage = ({ from_id, chatting_id, message }) => {
+export const addMessage = (message) => {
   return {
     type: ADD_MESSAGE,
-    message: {
-      from_id,
-      chatting_id,
-      content: message,
-      time: Date.now(),
-    },
+    message,
   };
 };
 

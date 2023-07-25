@@ -72,6 +72,7 @@ export const postMessage = async ({ chatting_id, from_id, content }) => {
     if (!data.success) {
       throw new Error(data.message);
     }
+    return data.result;
   } catch (err) {
     throw new Error(err.message);
   }

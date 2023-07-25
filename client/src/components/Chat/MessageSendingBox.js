@@ -35,9 +35,13 @@ const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
       event.preventDefault();
       try {
         if (message) {
-          await postMessage({ chatting_id, from_id, content: message });
-          socket.emit(socketEvent.REPLY_MESSAGE, to_id, message);
-          dispatch(addMessage({ from_id, chatting_id, message }));
+          const messageObject = await postMessage({
+            chatting_id,
+            from_id,
+            content: message,
+          });
+          socket.emit(socketEvent.REPLY_MESSAGE, to_id, messageObject);
+          dispatch(addMessage(messageObject));
         }
         messageInput.current.focus();
       } catch (err) {

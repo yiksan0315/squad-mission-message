@@ -4,7 +4,10 @@
   "description": "sqaud part mission(8,9)",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec babel-node . --delay 2"
+    "start": "nodemon --exec babel-node ./src --delay 2",
+    "startBuild": "nodemon ./build --delay 2",
+    "startPure": "node ./build",
+    "build": "babel src -d build"
   },
   "repository": {
     "type": "git",

@@ -23,13 +23,7 @@ function App() {
     dispatch(setToken());
 
     socket.on(socketEvent.SEND_MESSAGE, (message) => {
-      dispatch(
-        addMessage({
-          from_id: message.from_id,
-          chatting_id: message.chatting_id,
-          message: message.content,
-        })
-      );
+      dispatch(addMessage(message));
     });
   }, [dispatch]);
 

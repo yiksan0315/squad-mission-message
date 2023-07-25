@@ -1,7 +1,7 @@
 import { HttpStatusCode } from 'axios';
 import Chatting from '../../../models/Chatting';
 
-export const postChatting = (req, res) => {
+export const postChatting = async (req, res) => {
   const { from_id, to_id } = req.body;
 
   try {
@@ -10,7 +10,7 @@ export const postChatting = (req, res) => {
     }
     // user 존재 여부 나중에 확인해 보기
 
-    const chatting = Chatting.create({ from_id, to_id });
+    const chatting = await Chatting.create({ from_id, to_id });
     res.status(HttpStatusCode.Ok).send({ success: true, result: chatting });
   } catch (err) {
     res

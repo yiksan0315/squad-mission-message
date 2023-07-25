@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MessageSendingBox from '../components/Chat/MessageSendingBox';
 import { getChattingById, getMessages, postChatting } from '../api/Chatting';
 import { setChatting, setMessages } from '../modules/Chatting';
+import MessageBox from '../components/Chat/MessageBox';
 
 const ChatScreen = ({ token }) => {
   const params = useParams();
@@ -16,6 +17,10 @@ const ChatScreen = ({ token }) => {
 
   const { messages, chatting } = useSelector((state) => {
     return state.Chatting;
+  });
+
+  const receiver = useSelector((state) => {
+    return state.Account.receiver;
   });
 
   const dispatch = useDispatch();
@@ -52,7 +57,6 @@ const ChatScreen = ({ token }) => {
 
   useEffect(() => {
     chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
-    console.log('!!');
   }, [messages, isLoading]);
 
   const onClick = useCallback(() => {
@@ -70,7 +74,14 @@ const ChatScreen = ({ token }) => {
             <div>loading...</div>
           ) : (
             messages.map((item) => {
-              return <div>{item.content}</div>;
+              return (
+                <MessageBox
+                  key={item._id}
+                  message={item}
+                  me={token}
+                  receiver={receiver}
+                />
+              );
             })
           )}
           <div ref={chatBoxRef} />

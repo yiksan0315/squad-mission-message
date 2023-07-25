@@ -2,7 +2,9 @@ import OpenColor from 'open-color';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { shadow } from '../../utils/StyleUtil';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { setReceiver } from '../../modules/Account';
 
 const Wrapper = styled(Link)`
   display: flex;
@@ -26,11 +28,17 @@ const Wrapper = styled(Link)`
   }
 `;
 
-const UserBox = ({ id, nickname }) => {
+const UserBox = ({ user }) => {
+  const dispatch = useDispatch();
+
+  const onClick = useCallback(() => {
+    dispatch(setReceiver(user));
+  }, [user, dispatch]);
+
   return (
-    <Wrapper to={`/chat/${id}`}>
-      <p>{`(${id})`}</p>
-      <h5>{nickname}</h5>
+    <Wrapper to={`/chat/${user.id}`} onClick={onClick}>
+      <p>{`(${user.id})`}</p>
+      <h5>{user.nickname}</h5>
     </Wrapper>
   );
 };
