@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setToken } from './modules/AccessToken';
 import { useCallback, useEffect } from 'react';
 import { addMessage } from './modules/Chatting';
-import socket from './lib/socket';
+import socket, { socketEvent } from './lib/socket';
 
 function App() {
   const { loading, data, error } = useSelector((state) => {
@@ -22,15 +22,21 @@ function App() {
   useEffect(() => {
     dispatch(setToken());
 
-    socket.on('sending', (message) => {
-      dispatch(addMessage(message));
+    socket.on(socketEvent.SEND_MESSAGE, (message) => {
+      dispatch(
+        addMessage({
+          from_id: message.from_id,
+          chatting_id: message.chatting_id,
+          message: message.content,
+        })
+      );
     });
   }, [dispatch]);
 
   useEffect(() => {
     if (!loading) {
       if (!error && data) {
-        socket.emit('register', data.id);
+        socket.emit(socketEvent.REGISTER, data.id);
       }
     }
   }, [data, loading, error]);

@@ -10,8 +10,8 @@ export const postChatting = (req, res) => {
     }
     // user 존재 여부 나중에 확인해 보기
 
-    Chatting.create({ from_id, to_id });
-    res.status(HttpStatusCode.Ok).send({ success: true });
+    const chatting = Chatting.create({ from_id, to_id });
+    res.status(HttpStatusCode.Ok).send({ success: true, result: chatting });
   } catch (err) {
     res
       .status(HttpStatusCode.BadRequest)
@@ -20,7 +20,7 @@ export const postChatting = (req, res) => {
 };
 
 export const getChatting = async (req, res) => {
-  const from_id = req.body.from_id;
+  const from_id = req.query.from_id;
 
   try {
     if (!from_id) {
@@ -31,7 +31,7 @@ export const getChatting = async (req, res) => {
 
     res.status(HttpStatusCode.Ok).send({
       success: true,
-      result: [...chattings_from_id, ...chattings_to_id],
+      result: { from_id: chattings_from_id, to_id: chattings_to_id },
     });
   } catch (err) {
     res
@@ -41,17 +41,19 @@ export const getChatting = async (req, res) => {
 };
 
 export const getChattingById = async (req, res) => {
-  const from_id = req.body.from_id;
+  const from_id = req.query.from_id;
   const to_id = req.params.id;
 
   try {
     if (!from_id || !to_id) {
+      console.log(from_id);
+      console.log(to_id);
       throw new Error('request not correct... ');
     }
     const chatting = await Chatting.findOneByFromIdAndToId({ from_id, to_id });
-    if (!chatting) {
-      throw new Error(`no chatting between ${from_id} and ${to_id}...`);
-    }
+    // if (!chatting) {
+    //   throw new Error(`no chatting between ${from_id} and ${to_id}...`);
+    // }
     res.status(HttpStatusCode.Ok).send({
       success: true,
       result: chatting,

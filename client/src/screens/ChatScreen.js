@@ -1,24 +1,59 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { StyledBackground, StyledWindow } from '../styles/BackGroundStyle';
 import Header from '../components/Chat/Header';
 import ChatBox from '../components/Chat/ChatBox';
 import HeaderButton from '../components/Chat/HeaderButton';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MessageSendingBox from '../components/Chat/MessageSendingBox';
+import { getChattingById, getMessages, postChatting } from '../api/Chatting';
+import { setChatting, setMessages } from '../modules/Chatting';
 
 const ChatScreen = ({ token }) => {
   const params = useParams();
   const navigate = useNavigate();
   const chatBoxRef = useRef();
 
-  const { chattings } = useSelector((state) => {
+  const { messages, chatting } = useSelector((state) => {
     return state.Chatting;
   });
 
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadMessage = async () => {
+      try {
+        const request = {
+          from_id: token.id,
+          to_id: params.id,
+        };
+        let chattingRoom = await getChattingById(request);
+        if (!chattingRoom) {
+          chattingRoom = await postChatting(request);
+        }
+
+        const temp = await getMessages({
+          from_id: token.id,
+          chatting_id: chattingRoom._id,
+        });
+        const messagesObject = [...temp.from_id, ...temp.to_id];
+
+        dispatch(setChatting(chattingRoom));
+        dispatch(setMessages(messagesObject));
+        setIsLoading(false);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+    loadMessage();
+  }, [params.id, token.id, dispatch]);
+
   useEffect(() => {
     chatBoxRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [chattings]);
+    console.log('!!');
+  }, [messages, isLoading]);
 
   const onClick = useCallback(() => {
     navigate('/');
@@ -31,12 +66,22 @@ const ChatScreen = ({ token }) => {
           <HeaderButton value="back" onClick={onClick} />
         </Header>
         <ChatBox errorMessage="no chating...">
-          {chattings.map((item) => {
-            return <div>{item}</div>;
-          })}
+          {isLoading ? (
+            <div>loading...</div>
+          ) : (
+            messages.map((item) => {
+              return <div>{item.content}</div>;
+            })
+          )}
           <div ref={chatBoxRef} />
         </ChatBox>
-        <MessageSendingBox id={params.id}></MessageSendingBox>
+        {isLoading || (
+          <MessageSendingBox
+            chatting_id={chatting._id}
+            from_id={token.id}
+            to_id={params.id}
+          ></MessageSendingBox>
+        )}
       </StyledBackground>
     </StyledWindow>
   );

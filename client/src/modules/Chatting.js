@@ -1,26 +1,51 @@
 // Action types
 const ADD_MESSAGE = 'Chatting/ADD_MESSAGE';
+const SET_MESSAGES = 'Chatting/SET_MESSAGES';
+const SET_CHATTING = 'Chatting/SET_CHATTING';
 
 // Action Creating functions
 
-export const addMessage = (message) => {
+export const addMessage = ({ from_id, chatting_id, message }) => {
   return {
     type: ADD_MESSAGE,
-    message,
+    message: {
+      from_id,
+      chatting_id,
+      content: message,
+      time: Date.now(),
+    },
+  };
+};
+
+export const setChatting = (chatting) => {
+  return {
+    type: SET_CHATTING,
+    chatting,
+  };
+};
+
+export const setMessages = (messages) => {
+  return {
+    type: SET_MESSAGES,
+    messages,
   };
 };
 
 // Declare Initial state
 const initialState = {
-  chattings: [],
+  chatting: null,
+  messages: [],
 };
 
 // Declare Reducer
 export default function Chatting(state = initialState, action) {
   switch (action.type) {
     case ADD_MESSAGE:
-      return { ...state, chattings: [...state.chattings, action.message] };
-
+      return { ...state, messages: [...state.messages, action.message] };
+    case SET_CHATTING:
+      return { ...state, chatting: action.chatting };
+    case SET_MESSAGES:
+      return { ...state, messages: action.messages };
     default:
       return state;
   }

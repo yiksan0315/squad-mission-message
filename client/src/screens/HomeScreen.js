@@ -8,7 +8,7 @@ import Header from '../components/Chat/Header';
 import ChatBox from '../components/Chat/ChatBox';
 import HeaderButton from '../components/Chat/HeaderButton';
 import { logout } from '../api/Login';
-import socket from '../lib/socket';
+import socket, { socketEvent } from '../lib/socket';
 
 const Message = styled.p`
   font-size: 2.5em;
@@ -36,7 +36,7 @@ const HomeScreen = ({ token, onLogout }) => {
   }, []);
 
   const onClick = useCallback(async () => {
-    socket.emit('unregister', token.id);
+    socket.emit(socketEvent.UNREGISTER, token.id);
     await logout(onLogout);
   }, [onLogout, token]);
 

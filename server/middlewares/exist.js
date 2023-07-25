@@ -3,13 +3,16 @@ import Chatting from '../models/Chatting';
 import Account from '../models/Account';
 
 const existMiddleware = async (req, res, next) => {
-  const { chatting_id, from_id } = req.body;
-
-  if (!chatting_id || !from_id) {
-    throw new Error('request not correct... ');
+  let request = req.body;
+  if (Object.entries(request).length === 0) {
+    request = req.query;
   }
+  const { chatting_id, from_id } = request;
 
   try {
+    if (!chatting_id || !from_id) {
+      throw new Error('request not correct... ');
+    }
     const chatting = await Chatting.findOneById(chatting_id);
     const account = await Account.findOneById(from_id);
     if (!chatting) {

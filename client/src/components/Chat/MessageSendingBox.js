@@ -2,8 +2,9 @@ import OpenColor from 'open-color';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
+import socket, { socketEvent } from '../../lib/socket';
+import { postMessage } from '../../api/Chatting';
 import { addMessage } from '../../modules/Chatting';
-import socket from '../../lib/socket';
 
 const Wrapper = styled.form`
   display: flex;
@@ -16,7 +17,7 @@ const Wrapper = styled.form`
   align-items: center;
 `;
 
-const MessageSendingBox = ({ id }) => {
+const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
   const dispatch = useDispatch();
   const messageInput = useRef();
 
@@ -32,13 +33,18 @@ const MessageSendingBox = ({ id }) => {
   const onSubmit = useCallback(
     async (event) => {
       event.preventDefault();
-      if (message) {
-        socket.emit('reply', id, message);
-        dispatch(addMessage(message));
+      try {
+        if (message) {
+          await postMessage({ chatting_id, from_id, content: message });
+          socket.emit(socketEvent.REPLY_MESSAGE, to_id, message);
+          dispatch(addMessage({ from_id, chatting_id, message }));
+        }
+        messageInput.current.focus();
+      } catch (err) {
+        console.log(err.message);
       }
-      messageInput.current.focus();
     },
-    [id, message, dispatch]
+    [chatting_id, from_id, to_id, message, dispatch]
   );
 
   return (

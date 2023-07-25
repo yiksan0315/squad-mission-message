@@ -15,7 +15,7 @@ export const getUsers = async () => {
 
 export const getUserById = async (id) => {
   try {
-    const response = await API.get(`/account/:${id}`);
+    const response = await API.get(`/account/${id}`);
     const data = response.data;
     if (!data.success) {
       throw new Error(data.message);

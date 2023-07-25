@@ -19,7 +19,7 @@ export const postMessage = async (req, res) => {
 };
 
 export const getMessage = async (req, res) => {
-  const { from_id, chatting_id } = req.body;
+  const { from_id, chatting_id } = req.query;
 
   let messagesObject = { from_id: [], to_id: [] };
 
