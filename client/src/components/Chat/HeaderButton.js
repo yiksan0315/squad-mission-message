@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import oc from 'open-color';
+import OpenColor from 'open-color';
 import { shadow } from '../../utils/StyleUtil';
 import React from 'react';
 
@@ -11,7 +11,7 @@ const Wrapper = styled.input`
   border-radius: 0.5rem;
   border: none;
 
-  background: ${oc.indigo[8]};
+  background: ${OpenColor.indigo[8]};
   color: white;
 
   text-align: center;
@@ -23,12 +23,12 @@ const Wrapper = styled.input`
   transition: 0.2s all;
 
   &:hover {
-    background: ${oc.indigo[9]};
+    background: ${OpenColor.indigo[9]};
     ${shadow(0)}
   }
 
   &:active {
-    background: ${oc.indigo[2]};
+    background: ${OpenColor.indigo[2]};
   }
 `;
 

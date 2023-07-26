@@ -5,6 +5,8 @@ import { styled } from 'styled-components';
 import socket, { socketEvent } from '../../lib/socket';
 import { postMessage } from '../../api/Chatting';
 import { addMessage } from '../../modules/Chatting';
+import { BsSendFill } from 'react-icons/bs';
+import { shadow } from '../../utils/StyleUtil';
 
 const Wrapper = styled.form`
   display: flex;
@@ -13,8 +15,38 @@ const Wrapper = styled.form`
 
   width: 100%;
   height: 10%;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+`;
+
+const InputWrapper = styled.input`
+  margin-left: 1em;
+  margin-right: 1em;
+  width: inherit;
+  height: 70%;
+
+  border: 1px solid ${OpenColor.gray[3]};
+  border-radius: 2em;
+  line-height: 2.5rem;
+  font-size: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+`;
+
+const Send = styled(BsSendFill)`
+  margin-right: 1em;
+
+  border-radius: 20%;
+  padding: 1%;
+
+  &:hover {
+    background: ${OpenColor.indigo[9]};
+    ${shadow(0)}
+  }
+
+  &:active {
+    background: ${OpenColor.indigo[2]};
+  }
 `;
 
 const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
@@ -42,6 +74,7 @@ const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
           });
           socket.emit(socketEvent.REPLY_MESSAGE, to_id, messageObject);
           dispatch(addMessage(messageObject));
+          setMessage('');
         }
         messageInput.current.focus();
       } catch (err) {
@@ -53,13 +86,15 @@ const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
 
   return (
     <Wrapper onSubmit={onSubmit}>
-      <input
+      <InputWrapper
         placeholder="type message..."
         value={message}
         onChange={onChange}
         ref={messageInput}
       />
-      <input type="submit" value=">>" />
+      <Send size="2em">
+        <input type="submit" />
+      </Send>
     </Wrapper>
   );
 };

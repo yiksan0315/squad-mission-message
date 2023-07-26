@@ -39,11 +39,10 @@ const ChatScreen = ({ token }) => {
           chattingRoom = await postChatting(request);
         }
 
-        const temp = await getMessages({
-          from_id: token.id,
+        const messagesObject = await getMessages({
           chatting_id: chattingRoom._id,
         });
-        const messagesObject = [...temp.from_id, ...temp.to_id];
+        console.log(messagesObject);
 
         dispatch(setChatting(chattingRoom));
         dispatch(setMessages(messagesObject));

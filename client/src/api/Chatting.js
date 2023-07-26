@@ -46,10 +46,10 @@ export const postChatting = async ({ from_id, to_id }) => {
   }
 };
 
-export const getMessages = async ({ chatting_id, from_id }) => {
+export const getMessages = async ({ chatting_id }) => {
   try {
     const response = await API.get('/message', {
-      params: { chatting_id, from_id },
+      params: { chatting_id },
     });
     const data = response.data;
     if (!data.success) {

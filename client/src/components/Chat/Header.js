@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const Nickname = styled.p`
+const Nickname = styled.strong`
   margin-left: 0.5em;
   color: ${OpenColor.gray[1]};
   font-size: 1.5em;

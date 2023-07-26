@@ -4,8 +4,7 @@ import existMiddleware from '../../../middlewares/exist';
 
 const messageRouter = express.Router();
 
-messageRouter.use('/', existMiddleware);
 messageRouter.get('/', getMessage);
-messageRouter.post('/', postMessage);
+messageRouter.post('/', existMiddleware, postMessage);
 
 export default messageRouter;

@@ -19,23 +19,16 @@ export const postMessage = async (req, res) => {
 };
 
 export const getMessage = async (req, res) => {
-  const { from_id, chatting_id } = req.query;
-
-  let messagesObject = { from_id: [], to_id: [] };
+  const { chatting_id } = req.query;
 
   try {
     const messages = await Message.find({ chatting_id });
-    messages.map((item) => {
-      if (item.from_id === from_id) {
-        messagesObject.from_id.push(item);
-      } else {
-        messagesObject.to_id.push(item);
-      }
+    const orderedMessages = messages.sort((a, b) => {
+      return new Date(a.time) - new Date(b.time);
     });
-
     res
       .status(HttpStatusCode.Ok)
-      .send({ success: true, result: messagesObject });
+      .send({ success: true, result: orderedMessages });
   } catch (err) {
     res
       .status(HttpStatusCode.BadRequest)

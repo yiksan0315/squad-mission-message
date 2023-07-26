@@ -31,7 +31,7 @@ export const getChatting = async (req, res) => {
 
     res.status(HttpStatusCode.Ok).send({
       success: true,
-      result: { from_id: chattings_from_id, to_id: chattings_to_id },
+      result: [...chattings_from_id, ...chattings_to_id],
     });
   } catch (err) {
     res
