@@ -1,11 +1,13 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import OpenColor from 'open-color';
+import { shadow } from '../../utils/StyleUtil';
 
 const Wrapper = styled.div`
   display: flex;
   background-color: ${OpenColor.indigo[5]};
   border-radius: 1em 1em 0 0;
+  ${shadow(0)}
 
   width: 100%;
   height: 10%;

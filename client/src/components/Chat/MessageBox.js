@@ -1,6 +1,7 @@
 import OpenColor from 'open-color';
 import React from 'react';
 import { styled } from 'styled-components';
+import { shadow } from '../../utils/StyleUtil';
 
 const Wrapper = styled.div`
   margin-bottom: 1em;
@@ -19,6 +20,7 @@ const ToIdWrapper = styled(Wrapper)`
 const MessageWrapper = styled.div`
   border-radius: 10px;
   color: black;
+  ${shadow(1)}
 
   height: fit-content;
   width: fit-content;

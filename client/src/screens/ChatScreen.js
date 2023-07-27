@@ -35,7 +35,7 @@ const ChatScreen = ({ token, messages, chatting, receiver }) => {
                 key={item._id}
                 message={item}
                 me={token}
-                receiver={receiver}
+                receiver={receiver.data}
               />
             );
           })
