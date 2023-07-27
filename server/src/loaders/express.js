@@ -11,7 +11,11 @@ export default async ({ app }) => {
   app.use(express.urlencoded({ extended: true }));
   app.use(cors());
 
-  app.use(morgan('dev'));
+  if (process.env.NODE_ENV === 'production') {
+    app.use(morgan('combined'));
+  } else {
+    app.use(morgan('dev'));
+  }
   app.set('jwt-secret', config.secret);
 
   app.use(cookieParser());

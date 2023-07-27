@@ -1,11 +1,6 @@
 import socket from 'socket.io';
 
-// 기본적으로 그냥 로그인 했을 때 socket을 생성해주거나, 아니면 App이 구동 되었을 때
-// store에서 그냥 socket 만들어서 박아두기
-
 const SEND_MESSAGE = 'sending';
-// 메세지 받으면 보내주기, 이때 상대 socket이 존재하지 않는다면 보내주기는 x,
-// 메세지 db에 저장?
 const REPLY_MESSAGE = 'reply';
 const REGISTER = 'register';
 const UNREGISTER = 'unregister';
@@ -55,9 +50,5 @@ export default async ({ app, server }) => {
         user.emit(SEND_MESSAGE, message);
       }
     });
-
-    // 대충 이렇게 되면 데이터베이스에 저장
-    // 그런 다음에 socket.emit()으로 해서 상대방한테 전송
-    // 한쪽 연결 끊어지면은 데이터베이스에 저장만 하고 emit은 안해줌
   });
 };
