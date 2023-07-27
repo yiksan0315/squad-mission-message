@@ -1,7 +1,8 @@
 import { check } from '../api/Login';
+import { reducerUtils } from '../lib/asyncUtils';
 import { getCookie, removeCookie } from '../utils/Cookie';
 
-// Action types
+// Action Types
 const SET_TOKEN = 'AccessToken/SET_TOKEN';
 const SET_TOKEN_SUCCESS = 'AccessToken/SET_TOKEN_SUCCESS';
 const SET_TOKEN_ERROR = 'AccessToken/SET_TOKEN_ERROR';
@@ -17,7 +18,7 @@ export const setToken = () => async (dispatch) => {
       throw new Error('no cookie...');
     }
     const decoded = await check(token);
-    dispatch({ type: SET_TOKEN_SUCCESS, decoded });
+    dispatch({ type: SET_TOKEN_SUCCESS, payload: decoded });
   } catch (err) {
     console.log(err.message);
     removeCookie(TOKEN_NAME);
@@ -27,18 +28,18 @@ export const setToken = () => async (dispatch) => {
 
 // Declare Initial state
 const initialState = {
-  token: { loading: false, data: null, error: null },
+  token: reducerUtils.createState(),
 };
 
 // Declare Reducer
 export default function AccessToken(state = initialState, action) {
   switch (action.type) {
     case SET_TOKEN:
-      return { token: { loading: true, data: null, error: null } };
+      return { token: reducerUtils.loading() };
     case SET_TOKEN_SUCCESS:
-      return { token: { loading: false, data: action.decoded, error: null } };
+      return { token: reducerUtils.success(action.payload) };
     case SET_TOKEN_ERROR:
-      return { token: { loading: false, data: null, error: action.error } };
+      return { token: reducerUtils.error(action.error) };
     default:
       return state;
   }

@@ -79,7 +79,7 @@ const MessageBox = ({ message, me, receiver }) => {
         <strong>{me.nickname}</strong>
         <FromIdMessage>
           {message.content}
-          <Time datetime={message.time}>{message.time}</Time>
+          <Time dateTime={message.time}>{message.time}</Time>
         </FromIdMessage>
       </FromIdWrapper>
     );
@@ -89,7 +89,7 @@ const MessageBox = ({ message, me, receiver }) => {
         <strong>{receiver.nickname}</strong>
         <ToIdMessage>
           {message.content}
-          <Time datetime={message.time}>{message.time}</Time>
+          <Time dateTime={message.time}>{message.time}</Time>
         </ToIdMessage>
       </ToIdWrapper>
     );

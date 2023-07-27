@@ -15,10 +15,7 @@ const ChatWrapper = styled.div`
   overflow-y: scroll;
 `;
 
-const ChatBox = ({ children, errorMessage }) => {
-  if (!children) {
-    return <ChatWrapper>{errorMessage}</ChatWrapper>;
-  }
+const ChatBox = ({ children }) => {
   return <ChatWrapper>{children}</ChatWrapper>;
 };
 

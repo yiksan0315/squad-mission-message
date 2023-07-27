@@ -2,10 +2,8 @@ import OpenColor from 'open-color';
 import { Link } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { shadow } from '../../utils/StyleUtil';
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { setReceiver } from '../../modules/Account';
 import { BiUserCircle } from 'react-icons/bi';
+import React from 'react';
 
 const Wrapper = styled(Link)`
   display: flex;
@@ -42,14 +40,8 @@ const Id = styled.div`
 `;
 
 const UserBox = ({ user }) => {
-  const dispatch = useDispatch();
-
-  const onClick = useCallback(() => {
-    dispatch(setReceiver(user));
-  }, [user, dispatch]);
-
   return (
-    <Wrapper to={`/chat/${user.id}`} onClick={onClick}>
+    <Wrapper to={`/chat/${user.id}`}>
       <BiUserCircle size={30} color={OpenColor.indigo[5]}></BiUserCircle>
       <Nickname>{`${user.nickname}`}</Nickname>
       <Id>{`(ID : ${user.id})`}</Id>

@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { StyledBackground, StyledWindow } from '../styles/BackGroundStyle';
 import { styled } from 'styled-components';
 import LoginInput from '../components/Login/LoginInput';
 import LoginButton from '../components/Login/LoginButton';
 import OpenColor from 'open-color';
 import { login, register } from '../api/Login';
+import LoadingBox from '../components/LoadingBox';
 
 const LoginLogo = styled.h2`
   letter-spacing: 5px;
@@ -67,59 +67,54 @@ const LoginScreen = ({ isLoading, onLogin }) => {
 
   if (isLoading) {
     return (
-      <StyledWindow>
-        <StyledBackground>
-          <LoginLogo>SQUAD</LoginLogo>
-          <LoginMessage>Loading...</LoginMessage>;
-        </StyledBackground>
-      </StyledWindow>
+      <>
+        <LoadingBox message={'Getting Token...'} />
+      </>
     );
   } else {
     return (
-      <StyledWindow>
-        <StyledBackground>
-          <LoginLogo>SQUAD</LoginLogo>
-          <LoginForm onSubmit={onSubmit}>
+      <>
+        <LoginLogo>SQUAD</LoginLogo>
+        <LoginForm onSubmit={onSubmit}>
+          <LoginInput
+            label="id"
+            value={id}
+            onChange={(e) => {
+              setId((prev) => {
+                return e.target.value;
+              });
+            }}
+          />
+          <LoginInput
+            label="password"
+            type="password"
+            value={password}
+            onChange={(e) => {
+              setPassword((prev) => {
+                return e.target.value;
+              });
+            }}
+          />
+          {isLogin ? (
+            <div />
+          ) : (
             <LoginInput
-              label="id"
-              value={id}
+              label="nickname"
+              value={nickname}
               onChange={(e) => {
-                setId((prev) => {
+                setNickname((prev) => {
                   return e.target.value;
                 });
               }}
             />
-            <LoginInput
-              label="password"
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword((prev) => {
-                  return e.target.value;
-                });
-              }}
-            />
-            {isLogin ? (
-              <div />
-            ) : (
-              <LoginInput
-                label="nickname"
-                value={nickname}
-                onChange={(e) => {
-                  setNickname((prev) => {
-                    return e.target.value;
-                  });
-                }}
-              />
-            )}
-            <LoginMessage>{message}</LoginMessage>
-            <LoginButton disabled={disabled} isLogin={isLogin} />
-          </LoginForm>
-          <LoginLink onClick={onClickIsLogin}>
-            {isLogin ? 'register' : 'login'}
-          </LoginLink>
-        </StyledBackground>
-      </StyledWindow>
+          )}
+          <LoginMessage>{message}</LoginMessage>
+          <LoginButton disabled={disabled} isLogin={isLogin} />
+        </LoginForm>
+        <LoginLink onClick={onClickIsLogin}>
+          {isLogin ? 'register' : 'login'}
+        </LoginLink>
+      </>
     );
   }
 };

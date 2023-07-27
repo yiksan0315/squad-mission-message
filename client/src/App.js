@@ -1,12 +1,15 @@
 import { Route, Routes } from 'react-router-dom';
 import LoginScreen from './screens/LoginScreen';
-import HomeScreen from './screens/HomeScreen';
-import ChatScreen from './screens/ChatScreen';
 import { useSelector, useDispatch } from 'react-redux';
 import { setToken } from './modules/AccessToken';
 import { useCallback, useEffect } from 'react';
 import { addMessage } from './modules/Chatting';
 import socket, { socketEvent } from './lib/socket';
+import NotFound from './screens/NotFound';
+import { StyledBackground, StyledWindow } from './styles/BackGroundStyle';
+import ChatContainer from './containers/ChatContainer';
+import LoadingBox from './components/LoadingBox';
+import AccountContainer from './containers/AccountContainer';
 
 function App() {
   const { loading, data, error } = useSelector((state) => {
@@ -36,19 +39,33 @@ function App() {
   }, [data, loading, error]);
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          data ? (
-            <HomeScreen token={data} onLogout={onSetToken} />
-          ) : (
-            <LoginScreen isLoading={loading} onLogin={onSetToken} />
-          )
-        }
-      />
-      <Route path="/chat/:id" element={<ChatScreen token={data} />} />
-    </Routes>
+    <StyledWindow>
+      <StyledBackground>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              data ? (
+                <AccountContainer token={data} />
+              ) : (
+                <LoginScreen isLoading={loading} onLogin={onSetToken} />
+              )
+            }
+          />
+          <Route
+            path="/chat/:id"
+            element={
+              data ? (
+                <ChatContainer token={data} />
+              ) : (
+                <LoadingBox message={'Loading Token...'} />
+              )
+            }
+          />
+          <Route path="/*" element={<NotFound />} />
+        </Routes>
+      </StyledBackground>
+    </StyledWindow>
   );
 }
 

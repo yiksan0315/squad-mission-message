@@ -67,14 +67,15 @@ const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
       event.preventDefault();
       try {
         if (message) {
+          const content = message;
+          setMessage('');
           const messageObject = await postMessage({
             chatting_id,
             from_id,
-            content: message,
+            content,
           });
           socket.emit(socketEvent.REPLY_MESSAGE, to_id, messageObject);
           dispatch(addMessage(messageObject));
-          setMessage('');
         }
         messageInput.current.focus();
       } catch (err) {
@@ -92,7 +93,7 @@ const MessageSendingBox = ({ chatting_id, from_id, to_id }) => {
         onChange={onChange}
         ref={messageInput}
       />
-      <Send size="2em">
+      <Send size="2em" onClick={onSubmit}>
         <input type="submit" />
       </Send>
     </Wrapper>
