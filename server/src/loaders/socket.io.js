@@ -11,6 +11,7 @@ let sockets = new Map();
 
 export default async ({ app, server }) => {
   const io = socket(server, {
+    path: '/socket',
     cors: {
       origin: '*',
       methods: ['GET', 'POST'],

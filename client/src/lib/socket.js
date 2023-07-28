@@ -7,6 +7,9 @@ export const socketEvent = {
   UNREGISTER: 'unregister',
 };
 
-const socket = io('http://localhost:5000', { cors: { origin: '*' } });
+const socket = io('/', {
+  path: '/socket',
+  cors: { origin: '*' },
+});
 
 export default socket;
