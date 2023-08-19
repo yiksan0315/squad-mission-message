@@ -1,7 +1,6 @@
 import express from 'express';
 import expressLoader from './loaders/express';
 import mongooseLoader from './loaders/mongoose';
-import Account from './models/Account';
 import http from 'http';
 import socketIoLoader from './loaders/socket.io';
 
